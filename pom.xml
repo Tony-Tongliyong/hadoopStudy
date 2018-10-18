@@ -69,6 +69,11 @@
         <artifactId>hive-pdk</artifactId>
            <version>0.10.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>0.10.1.0</version>
+        </dependency>
        <dependency>
         <groupId>javax.jdo</groupId>
         <artifactId>jdo2-api</artifactId>
@@ -93,6 +98,11 @@
             <groupId>org.apache.phoenix</groupId>
             <artifactId>phoenix-core</artifactId>
             <version>4.10.0-HBase-1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka_2.11</artifactId>
+            <version>0.10.1.0</version>
         </dependency>
 
     </dependencies>

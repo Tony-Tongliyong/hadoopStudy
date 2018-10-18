@@ -41,6 +41,7 @@ public class SpringHadoopHDFSApp {
             String str=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SS").format(calendar.getTime()).toString();
             System.out.println(str);
     }
+
     @Before
     public void setup(){
         ctx=new ClassPathXmlApplicationContext("beans.xml");

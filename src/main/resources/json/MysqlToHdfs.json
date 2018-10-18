@@ -1,0 +1,70 @@
+{
+  "job": {
+    "content": [
+      {
+        "writer": {
+          "parameter": {
+            "writeMode": "truncate",
+            "column": [
+              "emr_column"
+            ],
+            "fieldDelimiter": "\t",
+            "fileType": "orc",
+            "fileName": "table_name_pre",
+            "path": "/user/youshu/data/pre",
+            "defaultFS": "hdfs://emr-cluster",
+            "haveKerberos": "false",
+            "kerberosKeytabFilePath": "/home/youshu/youshu.keytab",
+            "kerberosPrincipal": "youshu@EMR.12.COM",
+            "hadoopConfig": {
+              "dfs.nameservices": "emr-cluster",
+              "dfs.ha.namenodes.emr-cluster": "nn1,nn2",
+              "dfs.namenode.rpc-address.emr-cluster.nn1": "emr-header-1.cluster-12:8020",
+              "dfs.namenode.rpc-address.emr-cluster.nn2": "emr-header-2.cluster-12:8020",
+              "dfs.client.failover.proxy.provider.emr-cluster": "org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider",
+              "dfs.data.transfer.protection": "integrity"
+            }
+          },
+          "name": "hdfswriter"
+        },
+        "reader": {
+          "parameter": {
+            "username": "mysql_username",
+            "column": [
+              "reder_column"
+            ],
+            "connection": [
+              {
+                "table": [
+                  "mysql_table"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://localhost:3306/database?useUnicode=true&characterEncoding=utf8&autoReconnect=true&connectTimeout=30000&socketTimeout=60000&rewriteBatchedStatements=true"
+                ]
+              }
+            ],
+            "where": "where_condition",
+            "password": "mysql_user_password",
+            "splitPk": "tongID"
+          },
+          "name": "mysqlreader"
+        }
+      }
+    ],
+    "setting": {
+      "speed": {
+        "channel": 10
+      }
+    }
+  },
+  "core": {
+    "transport": {
+      "channel": {
+        "speed": {
+          "record": -1,
+          "byte": -1
+        }
+      }
+    }
+  }
+}

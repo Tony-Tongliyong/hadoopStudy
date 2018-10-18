@@ -44,7 +44,6 @@ public class WordCount {
 
         @Override
         public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
-
             int count=0;
             for(IntWritable value:values){
                 count+=value.get();
@@ -72,9 +71,6 @@ public class WordCount {
         wordCountJob.setJarByClass(WordCount.class);
         wordCountJob.setMapperClass(WordCountMapper.class);
         wordCountJob.setReducerClass(WordCountReducer.class);
-
-
-
 
         wordCountJob.setOutputKeyClass(Text.class);
         wordCountJob.setOutputValueClass(IntWritable.class);

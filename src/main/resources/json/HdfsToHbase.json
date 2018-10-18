@@ -1,0 +1,74 @@
+{
+  "job": {
+    "setting": {
+      "speed": {
+        "channel": 5
+      }
+    },
+    "content": [
+      {
+        "reader": {
+                    "name": "hdfsreader",
+                    "parameter": {
+                        "path": "path",
+                        "defaultFS": "hdfs://emr-cluster",
+                        "haveKerberos": "true",
+                        "kerberosKeytabFilePath": "/home/youshu/youshu.keytab",
+                        "kerberosPrincipal": "youshu@EMR.12.COM",
+                        "hadoopConfig": {
+                        "dfs.nameservices": "emr-cluster",
+                        "dfs.ha.namenodes.emr-cluster": "nn1,nn2",
+                        "dfs.namenode.rpc-address.emr-cluster.nn1": "emr-header-1.cluster-12:8020",
+                        "dfs.namenode.rpc-address.emr-cluster.nn2": "emr-header-2.cluster-12:8020",
+                        "dfs.client.failover.proxy.provider.emr-cluster": "org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider",
+                        "dfs.data.transfer.protection": "integrity"
+                         },
+                        "column": [
+                            {
+								"index": 0,
+								"type":"String"
+							},
+                            {
+                                "index": 1,
+                                "type":"String"
+                            }
+                        ],
+                        "fileType": "text||orc",
+                        "encoding": "UTF-8",
+                        "fieldDelimiter": "\t"
+                    }
+                },
+        "writer": {
+          "name": "hbase11xwriter",
+          "parameter": {
+            "hbaseConfig": {
+              "haveKerberos":"true",
+              "kerberosKeytabFilePath":"/home/youshu/youshu.keytab",
+              "kerberosPrincipal":"youshu@EMR.12.COM",
+              "hadoop.security.authentication":"kerberos",
+              "hbase.security.authentication":"kerberos",
+              "hbase.zookeeper.quorum":"emr-worker-1.cluster-12,emr-header-2.cluster-12,emr-header-1.cluster-12",
+              "hbase.regionserver.kerberos.principal":"hbase/_HOST@EMR.12.COM"
+            },
+            "table": "table",
+            "mode": "normal",
+            "rowkeyColumn": [
+                {
+                  "index":0,
+                  "type":"String"
+                }
+            ],
+            "column": [
+              {
+                "index":1,
+                "name": "cf1:role_name",
+                "type": "string"
+              }
+            ],
+            "encoding": "utf-8"
+          }
+        }
+      }
+    ]
+  }
+}

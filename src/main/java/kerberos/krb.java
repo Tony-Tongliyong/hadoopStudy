@@ -35,7 +35,8 @@ public class krb {
         if (propertiesFileName == null) {
             //optionMap.put("ticketCache", "/tmp/krb5cc_1000");
             optionMap.put("keyTab", "/etc/krb5.keytab");
-            optionMap.put("principal", "foo"); // default realm
+            // default realm
+            optionMap.put("principal", "foo");
 
             optionMap.put("doNotPrompt", "true");
             optionMap.put("refreshKrb5Config", "true");
@@ -56,7 +57,8 @@ public class krb {
             }
             optionMap.putAll((Map)p);
         }
-        optionMap.put("debug", "true"); // switch on debug of the Java implementation
+        // switch on debug of the Java implementation
+        optionMap.put("debug", "true");
 
         krb5LoginModule.initialize(subject, null, new HashMap<String,String>(), optionMap);
 
