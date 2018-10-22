@@ -6,11 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="tly.test" />
+        <module name="hadoop" />
+        <module name="sparkstreaming" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="tly.test" target="1.5" />
+      <module name="hadoop" target="1.8" />
+      <module name="sparkstreaming" target="1.8" />
+      <module name="tly.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

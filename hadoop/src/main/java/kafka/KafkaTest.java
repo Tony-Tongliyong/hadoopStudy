@@ -4,6 +4,11 @@ package kafka;
 import kafka.admin.AdminUtils;
 import kafka.admin.RackAwareMode;
 import kafka.utils.ZkUtils;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.client.HTable;
+import org.apache.hadoop.hbase.client.Put;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -15,9 +20,8 @@ import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.security.JaasUtils;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Properties;
+import java.io.IOException;
+import java.util.*;
 
 
 /**
@@ -28,7 +32,9 @@ import java.util.Properties;
  * @desc:
  */
 public class KafkaTest {
-
+    /**
+     * 创建topic
+     */
     @Test
     public  void createTopics() {
         KafkaTopicBean topic = new KafkaTopicBean("topic",1,1,"");
@@ -39,6 +45,9 @@ public class KafkaTest {
         zkUtils.close();
     }
 
+    /**
+     * 生产者
+     */
     @Test
     public  void produceTest(){
         Properties props = new Properties();
@@ -52,14 +61,21 @@ public class KafkaTest {
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
         Producer<String, String> producer = new KafkaProducer<String, String>(props);
-        for(int i = 0; i < 100; i++) {
-            producer.send(new ProducerRecord<String, String>("topic", Integer.toString(i), Integer.toString(i)));
+        Integer i = 0;
+        while(true) {
+            Scanner scanner = new Scanner(System.in);
+            String str = scanner.nextLine();
+            producer.send(new ProducerRecord<String, String>("topic",i.toString() , str));
+            i++;
         }
-        producer.close();
     }
 
+    /**
+     * 消费者，将kafka数据插入hbase
+     * @throws IOException
+     */
     @Test
-    public  void consumerTest(){
+    public  void consumerTest() throws IOException {
         Properties props = new Properties();
         props.put("bootstrap.servers", "192.168.86.128:9092");
         props.put("group.id", "test");
@@ -72,15 +88,39 @@ public class KafkaTest {
             public void onPartitionsRevoked(Collection<TopicPartition> collection) {
             }
             public void onPartitionsAssigned(Collection<TopicPartition> collection) {
-                //将偏移设置到最开始
-                consumer.seekToBeginning(collection);
+//                //将偏移设置到最开始
+//                consumer.seekToBeginning(collection);
             }
         });
         while (true) {
             ConsumerRecords<String, String> records = consumer.poll(1000);
             for (ConsumerRecord<String, String> record : records) {
-                System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
+                put(record.value());
             }
         }
+    }
+
+    /**
+     * hbase插入数据
+     * @param string
+     * @throws IOException
+     */
+    public  void put(String string) throws IOException {
+        //设置HBase据库的连接配置参数
+        Configuration conf = HBaseConfiguration.create();
+        conf.set("hbase.zookeeper.quorum",  "192.168.86.128:2181");
+        Random random = new Random();
+        long a = random.nextInt(1000000000);
+        String tableName = "emp";
+        String rowkey = "rowkey"+a ;
+        String columnFamily = "basicinfo";
+        String column = "empname";
+        //String value = string;
+        HTable table=new HTable(conf, tableName);
+        Put put=new Put(Bytes.toBytes(rowkey));
+        put.add(Bytes.toBytes(columnFamily), Bytes.toBytes(column), Bytes.toBytes(string));
+        table.put(put);
+        System.out.println("放入成功");
+        table.close();
     }
 }

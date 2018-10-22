@@ -4,7 +4,6 @@ import com.sun.security.auth.module.Krb5LoginModule;
 
 import javax.security.auth.Subject;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;

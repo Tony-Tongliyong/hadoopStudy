@@ -22,9 +22,9 @@
     <!--<task:scheduler id="qbScheduler" pool-size="10"/>-->
     <!--&lt;!&ndash; 开启autowired &ndash;&gt;-->
     <!--<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>-->
-    <!--&lt;!&ndash;<bean id="taskType" class="com.yscredit.pgp.mybatis.model.TaskType"/>&ndash;&gt;-->
+    <!--<bean id="taskType" class="com.yscredit.pgp.mybatis.model.TaskType"/>-->
     <!--<import resource="classpath:conf/"/>-->
-    <!-- 开启对@AspectJ面向切面注解的支持 -->
+     <!--&lt;!&ndash;开启对@AspectJ面向切面注解的支持 &ndash;&gt;-->
     <!--<aop:aspectj-autoproxy/>-->
 
 </beans>
