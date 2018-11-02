@@ -48,26 +48,10 @@ public class KafkaTest {
     /**
      * 生产者
      */
-    @Test
-    public  void produceTest(){
-        Properties props = new Properties();
-        props.put("bootstrap.servers", "192.168.86.128:9092");
-        props.put("acks", "all");
-        props.put("retries", 0);
-        props.put("batch.size", 16384);
-        props.put("linger.ms", 1);
-        props.put("buffer.memory", 33554432);
-        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+    public  static void main(String[] args){
 
-        Producer<String, String> producer = new KafkaProducer<String, String>(props);
-        Integer i = 0;
-        while(true) {
-            Scanner scanner = new Scanner(System.in);
-            String str = scanner.nextLine();
-            producer.send(new ProducerRecord<String, String>("topic",i.toString() , str));
-            i++;
-        }
+          new KafkaThread().start();
+
     }
 
     /**
@@ -77,25 +61,25 @@ public class KafkaTest {
     @Test
     public  void consumerTest() throws IOException {
         Properties props = new Properties();
-        props.put("bootstrap.servers", "192.168.86.128:9092");
+        props.put("bootstrap.servers", "192.168.86.128:9093,192.168.86.128:9092,192.168.86.128:9094");
         props.put("group.id", "test");
         props.put("enable.auto.commit", "true");
         props.put("auto.commit.interval.ms", "1000");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         final KafkaConsumer<String, String> consumer = new KafkaConsumer<String,String>(props);
-        consumer.subscribe(Arrays.asList("topic"),new ConsumerRebalanceListener() {
+        consumer.subscribe(Arrays.asList("tly"),new ConsumerRebalanceListener() {
             public void onPartitionsRevoked(Collection<TopicPartition> collection) {
             }
             public void onPartitionsAssigned(Collection<TopicPartition> collection) {
 //                //将偏移设置到最开始
-//                consumer.seekToBeginning(collection);
+                consumer.seekToBeginning(collection);
             }
         });
         while (true) {
             ConsumerRecords<String, String> records = consumer.poll(1000);
             for (ConsumerRecord<String, String> record : records) {
-                put(record.value());
+                System.out.println(record.value());
             }
         }
     }
@@ -124,3 +108,4 @@ public class KafkaTest {
         table.close();
     }
 }
+

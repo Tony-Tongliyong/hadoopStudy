@@ -7,12 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="hadoop" />
-        <module name="sparkstreaming" />
+        <module name="sparktrain" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="hadoop" target="1.8" />
-      <module name="sparkstreaming" target="1.8" />
+      <module name="sparktrain" target="1.8" />
       <module name="tly.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
