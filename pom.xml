@@ -129,6 +129,11 @@
             <version>5.1.33</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.oozie</groupId>
+            <artifactId>oozie-client</artifactId>
+            <version>4.1.0</version>
+        </dependency>
     </dependencies>
 
 
